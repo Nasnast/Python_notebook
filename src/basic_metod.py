@@ -1,13 +1,12 @@
 import json
 import datetime
 
-# from user_interface import interface
-
 notes = []
+id_len = 0
 
 
 def save_notes():
-    with open("notebook.json", "a") as file:
+    with open("notebook.json", "w") as file:
         json.dump(notes, file)
 
 
@@ -24,8 +23,8 @@ except FileNotFoundError:
 def add_notes():  # 1 создание заметки
     title = input("Введите заголовок заметки: ")
     text = input("Введите текст заметки: ")
-    date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    note = {"id": len(notes) + 1, "title": title, "text": text, "date": date}
+    date = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+    note = {"id": id_len + 1, "title": title, "text": text, "date": date}
     notes.append(note)
     save_notes()
     print("Заметка добавлена.")
@@ -39,7 +38,7 @@ def print_notes():  # 2 вывод списка заметок
         )
 
 
-def edit_notes():  # редактирование заметки
+def edit_notes():  # 3 редактирование заметки
     id = int(input("Введите ID заметки для редактирования: "))
     for note in notes:
         if note["id"] == id:
@@ -50,40 +49,26 @@ def edit_notes():  # редактирование заметки
             note["text"] = input("Введите новый текст заметки: ")
             note["date"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             save_notes()
-            print("Заметка отредактирована.")
-            break
-
-    print(f"Заметка с ID - {id} не найдена.")
+            return print("Заметка отредактирована.")
+    return print(f"Заметка с ID - {id} не найдена.")
 
 
-# var = 0
-#            while var != "3":
-#                print(
-#                    "Для редактирования заголовка нажмите - 1\n"
-#                    "Для редактирования текста заметки нажмите  - 2\n"
-#                    "Для возврата в главное меню нажмите - 3"
-#                )
-# var = input("выберите вариант действия: ")
-# while var not in ("1", "2", "3"):
-#     print("некорректный ввод!")
-# var = input("выберите вариант действия: ")
-# print()
-# match var:
-#     case "1":
-#         note["title"] = input("Введите новый заголовок заметки: ")
-#         note["date"] = datetime.datetime.now().strftime(
-#             "%Y-%m-%d %H:%M:%S"
-#         )
-#         save_notes()
-#         print("Заметка отредактирована.")
-#         break
-#     case "2":
-#         note["text"] = input("Введите новый текст заметки: ")
-#         note["date"] = datetime.datetime.now().strftime(
-#             "%Y-%m-%d %H:%M:%S"
-#         )
-#         save_notes()
-#         print("Заметка отредактирована.")
-#         break
-#     # case "3":
-#     # interface()
+def search_notes():  # 4 поиск по дате
+    filter_date = input("Введите дату для фильтрации (дд-мм-гггг): ")
+    for note in notes:
+        if filter_date in note["date"]:
+            print(
+                f"ID: {note['id']}, Заголовок: {note['title']}, Текст: {note['text']}, Дата: {note['date']}"
+            )
+        if not any(filter_date in note["date"] for note in notes):
+            print("Заметок с такой датой не найдено.")
+
+
+def delete_notes():  # 5 удаление
+    id = int(input("Введите ID заметки для удаления: "))
+    for note in notes:
+        if note["id"] == id:
+            notes.remove(note)
+            save_notes()
+            return print("Заметка удалена.")
+    return print(f"Заметка с ID - {id} не найдена.")
