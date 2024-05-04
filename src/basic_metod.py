@@ -2,7 +2,7 @@ import json
 import datetime
 
 notes = []
-id_len = 0
+id_len = len(notes) + 1
 
 
 def save_notes():
@@ -20,11 +20,21 @@ except FileNotFoundError:
     notes = []
 
 
+############
+def new_id():
+    max_id = len(notes)
+    for note in notes:
+        if max_id < note["id"]:
+            max_id = note["id"]
+    return max_id
+
+
 def add_notes():  # 1 создание заметки
     title = input("Введите заголовок заметки: ")
     text = input("Введите текст заметки: ")
     date = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-    note = {"id": id_len + 1, "title": title, "text": text, "date": date}
+    # id_len = len(notes) + 1
+    note = {"id": new_id() + 1, "title": title, "text": text, "date": date}
     notes.append(note)
     save_notes()
     print("Заметка добавлена.")
@@ -60,7 +70,8 @@ def search_notes():  # 4 поиск по дате
             print(
                 f"ID: {note['id']}, Заголовок: {note['title']}, Текст: {note['text']}, Дата: {note['date']}"
             )
-        if not any(filter_date in note["date"] for note in notes):
+        # if not any(filter_date in note["date"] for note in notes):
+        else:
             print("Заметок с такой датой не найдено.")
 
 
@@ -70,5 +81,7 @@ def delete_notes():  # 5 удаление
         if note["id"] == id:
             notes.remove(note)
             save_notes()
-            return print("Заметка удалена.")
+            print("Заметка удалена.")
+            return len(notes) + 1
+            # return id_len
     return print(f"Заметка с ID - {id} не найдена.")
