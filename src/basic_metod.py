@@ -68,6 +68,13 @@ def edit_notes():  # 3 редактирование заметки
 
 def search_notes():  # 4 поиск по дате
     filter_date = input("Введите дату для фильтрации (дд/мм/гггг): ")
+    # datetime.datetime.strptime(data_string, "%d.%m.%Y")
+    try:
+        datetime.datetime.strptime(filter_date, "%d/%m/%Y")
+
+    except ValueError:
+        return print("неверный формат даты")
+
     for note in notes:
         if filter_date in note["date"]:
             print(
