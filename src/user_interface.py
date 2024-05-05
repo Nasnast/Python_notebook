@@ -3,9 +3,6 @@ from basic_metod import *
 
 def interface():
 
-    # with open("notebook.json", "a", encoding="utf-8"):
-    #     pass
-
     var = 0
     while var != "6":
         print(

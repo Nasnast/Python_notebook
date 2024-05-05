@@ -4,16 +4,12 @@ import datetime
 from data_create import *
 
 notes = []
-id_len = len(notes) + 1
 
 
 def save_notes():
     with open("notebook.json", "w") as file:
         json.dump(notes, file)
 
-
-# def load_notes():
-#    global notes
 
 try:
     with open("notebook.json", "r") as file:
