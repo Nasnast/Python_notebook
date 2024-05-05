@@ -1,6 +1,8 @@
 import json
 import datetime
 
+from data_create import *
+
 notes = []
 id_len = len(notes) + 1
 
@@ -30,10 +32,9 @@ def new_id():
 
 
 def add_notes():  # 1 создание заметки
-    title = input("Введите заголовок заметки: ")
-    text = input("Введите текст заметки: ")
-    date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    # id_len = len(notes) + 1
+    title = input_title()
+    text = input_text()
+    date = input_date()
     note = {"id": new_id() + 1, "title": title, "text": text, "date": date}
     notes.append(note)
     save_notes()
@@ -58,9 +59,9 @@ def edit_notes():  # 3 редактирование заметки
             print(
                 f"ID: {note['id']}, Заголовок: {note['title']}, Текст: {note['text']}, Дата: {note['date']}"
             )
-            note["title"] = input("Введите новый заголовок заметки: ")
-            note["text"] = input("Введите новый текст заметки: ")
-            note["date"] = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+            note["title"] = input_title()
+            note["text"] = input_text()
+            note["date"] = input_date()
             save_notes()
             return print("Заметка отредактирована.")
     return print(f"Заметка с ID - {id} не найдена.")
@@ -68,7 +69,6 @@ def edit_notes():  # 3 редактирование заметки
 
 def search_notes():  # 4 поиск по дате
     filter_date = input("Введите дату для фильтрации (дд/мм/гггг): ")
-    # datetime.datetime.strptime(data_string, "%d.%m.%Y")
     try:
         datetime.datetime.strptime(filter_date, "%d/%m/%Y")
 
